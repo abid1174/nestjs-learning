@@ -5,8 +5,9 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Book } from './schemas/book.schema';
-import mongoose, { isValidObjectId } from 'mongoose';
+import mongoose from 'mongoose';
 import { Query } from 'express-serve-static-core';
+import { User } from '../auth/schemas/user.schema';
 
 @Injectable()
 export class BooksService {
@@ -14,8 +15,9 @@ export class BooksService {
     @InjectModel(Book.name) private bookModel: mongoose.Model<Book>,
   ) {}
 
-  async create(book: Book): Promise<Book> {
-    const bookResponse = await this.bookModel.create(book);
+  async create(book: Book, user: User): Promise<Book> {
+    const bookData = { ...book, user: user._id };
+    const bookResponse = await this.bookModel.create(bookData);
     return bookResponse;
   }
 
