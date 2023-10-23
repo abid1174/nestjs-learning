@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { User } from '../../auth/schemas/user.schema';
-import { Category } from 'src/constants/book-category.enum';
+import { Category } from '../../constants/book-category.enum';
 import mongoose from 'mongoose';
 
 @Schema({ timestamps: true })
