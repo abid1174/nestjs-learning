@@ -4,8 +4,8 @@ import { Column, Entity } from 'typeorm';
 @Entity({ name: 'users' })
 export class UserEntity extends AbstractEntity {
   @Column()
-  public firstName: string;
+  public first_name: string;
 
   @Column()
-  public lastName: string;
+  public last_name: string;
 }

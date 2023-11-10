@@ -3,11 +3,12 @@ import { Repository } from 'typeorm';
 import { UserEntity } from './entities';
 import { PageDto, PageMetaDto, PageOptionsDto } from 'src/common/dtos';
 import { UserDto } from './dtos';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @Inject('USER_REPOSITORY')
+    @InjectRepository(UserEntity)
     private readonly _userRepository: Repository<UserEntity>,
   ) {}
 
@@ -17,7 +18,7 @@ export class UsersService {
     const queryBuilder = this._userRepository.createQueryBuilder('user');
 
     queryBuilder
-      .orderBy('user.createdAt', pageOptionsDto.order)
+      .orderBy('user.created_at', pageOptionsDto.order)
       .skip(pageOptionsDto.skip)
       .take(pageOptionsDto.take);
 

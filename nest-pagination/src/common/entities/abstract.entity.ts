@@ -8,5 +8,5 @@ export class AbstractEntity {
 
   @CreateDateColumn()
   @Exclude()
-  public createdAt: Date;
+  public created_at: Date;
 }
