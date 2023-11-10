@@ -10,6 +10,8 @@ import {
 import { UsersService } from './users.service';
 import { PageDto, PageOptionsDto } from 'src/common/dtos';
 import { UserDto } from './dtos';
+import { ApiTags } from '@nestjs/swagger';
+import { ApiPaginatedResponse } from 'src/common/decorators';
 
 @Controller('users')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -18,6 +20,8 @@ export class UsersController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
+  @ApiTags('Users')
+  @ApiPaginatedResponse(UserDto)
   async getUsers(
     @Query() pageOptionsDto: PageOptionsDto,
   ): Promise<PageDto<UserDto>> {
