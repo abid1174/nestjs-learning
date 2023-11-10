@@ -31,6 +31,8 @@ describe('BookService', () => {
     findById: jest.fn(),
     find: jest.fn(),
     create: jest.fn(),
+    findByIdAndUpdate: jest.fn(),
+    findByIdAndDelete: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -67,6 +69,35 @@ describe('BookService', () => {
         mockUser as User,
       );
 
+      expect(result).toEqual(mockBook);
+    });
+  });
+
+  describe('updateById', () => {
+    it('should update and return updated book', async () => {
+      const updatedBook = { ...mockBook, title: 'Updated Title' };
+      const book = { title: 'Updated Title' };
+
+      jest.spyOn(model, 'findByIdAndUpdate').mockResolvedValue(updatedBook);
+
+      const result = await bookService.updateById(mockBook._id, book as any);
+
+      expect(model.findByIdAndUpdate).toHaveBeenCalledWith(mockBook._id, book, {
+        new: true,
+        runValidators: true,
+      });
+
+      expect(result.title).toEqual(updatedBook.title);
+    });
+  });
+
+  describe('deleteById', () => {
+    it('should delete and return deleted book', async () => {
+      jest.spyOn(model, 'findByIdAndDelete').mockResolvedValue(mockBook);
+
+      const result = await bookService.deleteById(mockBook._id);
+
+      expect(model.findByIdAndDelete).toHaveBeenCalledWith(mockBook._id);
       expect(result).toEqual(mockBook);
     });
   });
