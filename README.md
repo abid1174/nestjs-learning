@@ -4,8 +4,9 @@
 
 ## Library-API-Testing
 
-practiced several unit tests
-
+- Writing unit tests for services
+- Writing unit tests for controllers
+  
 ## Nest-Pagination
 
 practiced serverside pagination best practice with Typeorm
