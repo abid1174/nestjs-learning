@@ -1,10 +1,10 @@
 import mongoose, { Model } from 'mongoose';
 import { BooksService } from './books.service';
-import { Book, Category } from './schemas/book.schema';
+import { Book, Category } from '../schemas/book.schema';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { CreateBookDto } from './dto/create-book.dto';
+import { CreateBookDto } from '../dto/create-book.dto';
 import { User } from 'src/auth/schemas/user.schema';
 
 describe('BookService', () => {
