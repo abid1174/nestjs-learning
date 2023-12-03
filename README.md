@@ -1,19 +1,25 @@
 # Projects
 
-## Nest-ALS
+## 1. Nest-ALS
 
-## [Library-API-Testing](https://github.com/abid1174/nestjs-learning/tree/main/library-api-testing)
+## 2. [Library-API-Testing](https://github.com/abid1174/nestjs-learning/tree/main/library-api-testing)
 
-- Writing unit tests for services
-- Writing unit tests for controllers
+Tests Covers:
+* Auth
+  * Auth Service
+  * Auth Controller
+* Book
+  * Book Service
+  * Book Controller
   
-## Nest-Pagination
+  
+## 3. Nest-Pagination
 
 practiced serverside pagination best practice with Typeorm
 
 - source: https://pietrzakadrian.com/blog/how-to-create-pagination-in-nestjs-with-typeorm-swagger
 
-## Nest-Auth
+## 4. Nest-Auth
 
 practiced authentication and authrization with Typeorm
 
