@@ -5,6 +5,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
+import { ConflictException, UnauthorizedException } from '@nestjs/common';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -19,7 +20,10 @@ describe('AuthService', () => {
 
   const mockAuthService = {
     create: jest.fn(),
+    findOne: jest.fn(),
   };
+
+  const token = 'jwtToken';
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -49,8 +53,6 @@ describe('AuthService', () => {
       password: '123456',
     };
 
-    const token = 'jwtToken';
-
     it('should register a new user', async () => {
       jest
         .spyOn(bcrypt, 'hash')
@@ -66,6 +68,51 @@ describe('AuthService', () => {
 
       expect(bcrypt.hash).toHaveBeenCalled();
       expect(result).toEqual({ token });
+    });
+
+    it('should throw duplicate email error', async () => {
+      jest
+        .spyOn(userModel, 'create')
+        .mockImplementationOnce(() => Promise.reject({ code: 11000 }));
+
+      await expect(authService.singup(signUpDto)).rejects.toThrow(
+        ConflictException,
+      );
+    });
+  });
+
+  describe('login', () => {
+    const loginDto = {
+      email: 'abid@gmail.com',
+      password: '123456',
+    };
+
+    it('should login user and return token', async () => {
+      jest.spyOn(userModel, 'findOne').mockResolvedValueOnce(mockUser);
+      jest.spyOn(jwtService, 'sign').mockReturnValue('jwtToken');
+      jest
+        .spyOn(bcrypt, 'compare')
+        .mockImplementation(() => Promise.resolve(true));
+
+      const result = await authService.login(loginDto);
+      expect(result).toEqual({ token });
+    });
+
+    it('should throw unauthorized exception if user not found', async () => {
+      jest.spyOn(userModel, 'findOne').mockResolvedValueOnce(null);
+      expect(authService.login(loginDto)).rejects.toThrow(
+        UnauthorizedException,
+      );
+    });
+
+    it('should throw unauthorized exception if password wrong', async () => {
+      jest.spyOn(userModel, 'findOne').mockResolvedValueOnce(null);
+      jest
+        .spyOn(bcrypt, 'compare')
+        .mockImplementation(() => Promise.resolve(false));
+      expect(authService.login(loginDto)).rejects.toThrow(
+        UnauthorizedException,
+      );
     });
   });
 });
